@@ -69,9 +69,7 @@ void dirwalk(array* result, const char* path, SEARCH_PARAMS options) {
         char newPath[MAXPATHLEN];
         if(strcmp(d->d_name, ".") == 0 || strcmp(d->d_name, "..") == 0)
             continue;
-
         sprintf(newPath, "%s/%s", path, d->d_name);
-        printf("\n%s", newPath);
 
         if (lstat(newPath, &st) == -1)
             continue;
@@ -90,6 +88,7 @@ void dirwalk(array* result, const char* path, SEARCH_PARAMS options) {
 }
 
 int main(int argc, char** argv) {
+    //setlocale(LC_ALL, "ru_RU.UTF-8");
     array result = {NULL, 1, 0};
     char root_dir[MAXPATHLEN] = CURRENT_DIRECTORY;
     find_path_param(argc, argv);
@@ -97,9 +96,14 @@ int main(int argc, char** argv) {
         strncpy(root_dir, argv[optind], strlen(argv[optind]));
 
     optind = RESET_OPTIND;
+    if(!is_dir_exist(root_dir)) {
+        printf("There is no such directory\n");
+        strncpy(root_dir, CURRENT_DIRECTORY, strlen(CURRENT_DIRECTORY) + 1);
+    }
+
     printf("%s", root_dir);
 
-    char opt; SEARCH_PARAMS options = NONE_OPTION;
+    int opt; SEARCH_PARAMS options = NONE_OPTION;
     while((opt = getopt(argc, argv, PARAMS_LIST)) != -1) {
         switch (opt) {
             case 'd': {
