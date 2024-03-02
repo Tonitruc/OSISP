@@ -38,7 +38,7 @@ void add_array(array *arr, char* str) {
     if(arr->cur_size + 1 == arr->capacity)
         resize_array(arr);
     arr->buffer[arr->cur_size] = (char*)malloc(strlen(str) + 1);
-    strncpy(arr->buffer[arr->cur_size++], str, strlen(str));
+    strncpy(arr->buffer[arr->cur_size++], str, strlen(str) + 1);
 }
 void free_array(array *arr) {
     for(int i = 0; i < arr->cur_size; i++)
@@ -88,7 +88,7 @@ void dirwalk(array* result, const char* path, SEARCH_PARAMS options) {
 }
 
 int main(int argc, char** argv) {
-    //setlocale(LC_ALL, "ru_RU.UTF-8");
+    setlocale(LC_ALL, "ru_RU.UTF-8");
     array result = {NULL, 1, 0};
     char root_dir[MAXPATHLEN] = CURRENT_DIRECTORY;
     find_path_param(argc, argv);
