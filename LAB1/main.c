@@ -22,7 +22,7 @@ typedef enum SEARCH_PARAMS {
 } SEARCH_PARAMS;
 
 int compare_by_alph(const void* first, const void* second) {
-    return strcoll(first, second);
+    return strcoll(*(const void**)first, *(const void**)second);
 }
 
 typedef struct array {
@@ -93,7 +93,7 @@ int main(int argc, char** argv) {
     char root_dir[MAXPATHLEN] = CURRENT_DIRECTORY;
     find_path_param(argc, argv);
     if(optind < argc)
-        strncpy(root_dir, argv[optind], strlen(argv[optind]));
+        strncpy(root_dir, argv[optind], strlen(argv[optind] + 1));
 
     optind = RESET_OPTIND;
     if(!is_dir_exist(root_dir)) {
@@ -133,7 +133,8 @@ int main(int argc, char** argv) {
     for(int i = 0; i < result.cur_size; i++) {
         printf("\n%s", result.buffer[i]);
     }
-
+    
+    printf("\n");
     free_array(&result);
     return 1;
 }
